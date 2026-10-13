@@ -10,21 +10,26 @@
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="site-header">
+  <header class="hero">
+    <p class="eyebrow">Mazel Tov!</p>
     <h1>Simcha Planning</h1>
+    <p class="tagline">Musicians, photographers, caterers, venues and more, all in one place.</p>
   </header>
 
   <main id="app">
-    <p class="update-note" id="update-note">
-      To add or update a listing, please contact the site owner.
-    </p>
+    <div id="controls" class="controls hidden">
+      <input id="search" class="search" type="search" placeholder="Search by name, notes, phone..." aria-label="Search listings">
+      <nav id="chips" class="chips" aria-label="Categories"></nav>
+    </div>
     <div id="loading" class="status-message">Loading vendors...</div>
     <div id="error" class="status-message status-error hidden"></div>
     <section id="vendor-list" class="vendor-list hidden" aria-live="polite"></section>
+    <p id="no-results" class="status-message hidden">No listings match your search.</p>
+    <p class="update-note">To add or update a listing, please contact the site owner.</p>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>

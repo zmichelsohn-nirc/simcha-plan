@@ -75,15 +75,6 @@ async function loadWorkbookSheets() {
   });
 }
 
-function createChevron() {
-  const chevron = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  chevron.setAttribute("class", "chevron");
-  chevron.setAttribute("viewBox", "0 0 24 24");
-  chevron.setAttribute("aria-hidden", "true");
-  chevron.innerHTML = '<path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>';
-  return chevron;
-}
-
 function createLink(href, text) {
   const link = document.createElement("a");
   link.href = href;
@@ -171,13 +162,13 @@ function createCard(fields) {
   return card;
 }
 
-function createSection(sheet, index) {
-  const section = document.createElement("details");
+function createSection(sheet) {
+  const section = document.createElement("section");
   section.className = "cat-section";
-  section.open = index === 0;
+  section.dataset.category = sheet.name;
 
-  const summary = document.createElement("summary");
-  summary.className = "cat-summary";
+  const header = document.createElement("div");
+  header.className = "cat-header";
 
   const title = document.createElement("h2");
   title.className = "cat-title";
@@ -187,13 +178,17 @@ function createSection(sheet, index) {
   count.className = "count";
   count.textContent = `${sheet.items.length} ${sheet.items.length === 1 ? "listing" : "listings"}`;
 
-  summary.append(createChevron(), title, count);
-  section.appendChild(summary);
+  header.append(title, count);
+  section.appendChild(header);
 
   const cards = document.createElement("div");
   cards.className = "cards";
   if (sheet.items.length) {
-    sheet.items.forEach((fields) => cards.appendChild(createCard(fields)));
+    sheet.items.forEach((fields) => {
+      const card = createCard(fields);
+      card.dataset.search = fields.map((field) => field.value).join(" ").toLowerCase();
+      cards.appendChild(card);
+    });
   } else {
     const empty = document.createElement("p");
     empty.className = "empty";
@@ -204,10 +199,60 @@ function createSection(sheet, index) {
   return section;
 }
 
+function setupFilters(sheets) {
+  const chipsEl = document.getElementById("chips");
+  const searchEl = document.getElementById("search");
+  const noResultsEl = document.getElementById("no-results");
+  let activeCategory = null;
+
+  function apply() {
+    const query = searchEl.value.trim().toLowerCase();
+    let anyVisible = false;
+
+    listEl.querySelectorAll(".cat-section").forEach((section) => {
+      const inCategory = !activeCategory || section.dataset.category === activeCategory;
+      const cards = section.querySelectorAll(".vendor-card");
+      let matches = 0;
+      cards.forEach((card) => {
+        const match = !query || card.dataset.search.includes(query);
+        card.classList.toggle("hidden", !match);
+        if (match) {
+          matches += 1;
+        }
+      });
+      // While searching, hide categories with no hits (including empty ones).
+      const visible = inCategory && (!query || matches > 0);
+      section.classList.toggle("hidden", !visible);
+      anyVisible = anyVisible || visible;
+    });
+
+    noResultsEl.classList.toggle("hidden", anyVisible);
+  }
+
+  const chips = [{ label: "All", value: null }, ...sheets.map((sheet) => ({ label: sheet.name, value: sheet.name }))];
+  chips.forEach(({ label, value }) => {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "chip";
+    chip.textContent = label;
+    chip.setAttribute("aria-pressed", String(value === activeCategory));
+    chip.addEventListener("click", () => {
+      activeCategory = value;
+      chipsEl.querySelectorAll(".chip").forEach((el) => el.setAttribute("aria-pressed", String(el === chip)));
+      apply();
+    });
+    chipsEl.appendChild(chip);
+  });
+
+  searchEl.addEventListener("input", apply);
+  document.getElementById("controls").classList.remove("hidden");
+}
+
 async function init() {
   try {
     const sheets = await loadWorkbookSheets();
-    sheets.forEach((sheet, index) => listEl.appendChild(createSection(sheet, index)));
+    sheets.forEach((sheet) => listEl.appendChild(createSection(sheet)));
+    setupFilters(sheets);
     loadingEl.classList.add("hidden");
     listEl.classList.remove("hidden");
   } catch (error) {
