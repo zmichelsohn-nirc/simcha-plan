@@ -20,6 +20,11 @@
     <p class="tagline">Musicians, photographers, caterers, venues and more, all in one place.</p>
   </header>
 
+  <div class="update-banner">
+    <span>Know a vendor we're missing, or see something out of date?</span>
+    <a class="update-button" href="https://docs.google.com/spreadsheets/d/1HEefTFbxDTZSZ6nWfjJUHf4g8pLoOasV86y-jTOIpts/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Add or update a listing</a>
+  </div>
+
   <main id="app">
     <div id="controls" class="controls hidden">
       <input id="search" class="search" type="search" placeholder="Search by name, notes, phone..." aria-label="Search listings">
@@ -29,7 +34,6 @@
     <div id="error" class="status-message status-error hidden"></div>
     <section id="vendor-list" class="vendor-list hidden" aria-live="polite"></section>
     <p id="no-results" class="status-message hidden">No listings match your search.</p>
-    <p class="update-note">To add or update a listing, add it directly in <a href="https://docs.google.com/spreadsheets/d/1HEefTFbxDTZSZ6nWfjJUHf4g8pLoOasV86y-jTOIpts/edit?usp=sharing" target="_blank" rel="noopener noreferrer">the spreadsheet</a>.</p>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>

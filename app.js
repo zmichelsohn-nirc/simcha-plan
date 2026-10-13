@@ -44,6 +44,9 @@ function rowsToSheet(sheetName, rows) {
       .filter((field) => field.header))
     .filter((fields) => fields.some((field) => field.value));
 
+  const nameOf = (fields) => (fields.find((field) => TITLE_COLUMNS.includes(field.key)) || {}).value || "";
+  items.sort((a, b) => nameOf(a).localeCompare(nameOf(b), "en", { sensitivity: "base" }));
+
   return { name: sheetName, items };
 }
 
