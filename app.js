@@ -3,16 +3,7 @@ const WORKBOOK_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/e
 
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit?usp=sharing`;
 
-// Tab name -> sheet gid, so each section's button opens its own tab. Tabs not
-// listed here (new or renamed) fall back to the spreadsheet's main link.
-const TAB_GIDS = {
-  "Musicians": 0,
-  "Photographers": 2114847376,
-  "Caterers": 784334208,
-  "Venues": 1742539677,
-  "Party Planners": 679368504,
-  "Gemachs": 2103416205,
-};
+const HTMLVIEW_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/htmlview`;
 
 // Column headers (case-insensitive) that get special treatment. Any other
 // column in a tab is shown as a plain labeled detail, so new columns in the
@@ -196,7 +187,8 @@ function createSection(sheet) {
 
   const edit = document.createElement("a");
   edit.className = "section-edit";
-  edit.href = sheet.name in TAB_GIDS ? `${SHEET_URL}&gid=${TAB_GIDS[sheet.name]}#gid=${TAB_GIDS[sheet.name]}` : SHEET_URL;
+  edit.href = SHEET_URL;
+  edit.dataset.tab = sheet.name;
   edit.target = "_blank";
   edit.rel = "noopener noreferrer";
   edit.textContent = "Add or update";
@@ -271,11 +263,42 @@ function setupFilters(sheets) {
   document.getElementById("controls").classList.remove("hidden");
 }
 
+// Point each section's button at its own tab. The public htmlview page lists
+// every tab with its gid; if it can't be read, buttons keep the main sheet link.
+async function linkEditButtonsToTabs() {
+  try {
+    const response = await fetch(HTMLVIEW_URL);
+    if (!response.ok) {
+      return;
+    }
+    const html = await response.text();
+    const gids = new Map();
+    for (const match of html.matchAll(/items\.push\(\{name: "((?:[^"\\]|\\.)*)"[^}]*?gid: "(\d+)"/g)) {
+      let name = match[1];
+      try {
+        name = JSON.parse(`"${name}"`);
+      } catch (error) {
+        // Keep the raw name; plain tab names have no escapes anyway.
+      }
+      gids.set(name, match[2]);
+    }
+    document.querySelectorAll(".section-edit").forEach((link) => {
+      const gid = gids.get(link.dataset.tab);
+      if (gid) {
+        link.href = `${SHEET_URL}&gid=${gid}#gid=${gid}`;
+      }
+    });
+  } catch (error) {
+    console.warn("Could not look up tab links.", error);
+  }
+}
+
 async function init() {
   try {
     const sheets = await loadWorkbookSheets();
     sheets.forEach((sheet) => listEl.appendChild(createSection(sheet)));
     setupFilters(sheets);
+    linkEditButtonsToTabs();
     loadingEl.classList.add("hidden");
     listEl.classList.remove("hidden");
   } catch (error) {
