@@ -250,6 +250,12 @@ h1 {
   font-style: italic;
 }
 
+.update-note a {
+  color: var(--plum);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 .update-note {
   margin: 2.5rem 0 0;
   color: var(--muted);
