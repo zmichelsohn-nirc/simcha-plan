@@ -296,3 +296,131 @@ h1 {
   background: var(--plum);
   color: #fff;
 }
+
+.site-footer {
+  padding: 1.5rem 1.25rem 2.5rem;
+  text-align: center;
+}
+
+.contact-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--plum);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.contact-dialog {
+  width: min(92vw, 440px);
+  padding: 0;
+  border: 0;
+  border-top: 4px solid var(--gold);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 20px 60px rgba(63, 20, 40, 0.3);
+}
+
+.contact-dialog::backdrop {
+  background: rgba(63, 20, 40, 0.5);
+}
+
+.contact-form {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1.5rem;
+}
+
+.contact-form h2 {
+  margin: 0;
+  color: var(--plum);
+  font-family: Fraunces, Georgia, serif;
+}
+
+.contact-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 0.25rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font: inherit;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.honeypot {
+  position: absolute;
+  left: -9999px;
+}
+
+.contact-status {
+  margin: 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  background: #eef7ee;
+  color: #1f5a2b;
+  font-size: 0.92rem;
+}
+
+.contact-status.is-error {
+  background: #fff4f4;
+  color: #8a2932;
+}
+
+.contact-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0.55rem 1.2rem;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-primary {
+  border: 1px solid var(--plum);
+  background: var(--plum);
+  color: #fff;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.btn-secondary {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--plum);
+}

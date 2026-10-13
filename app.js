@@ -1,6 +1,7 @@
 const SPREADSHEET_ID = "1HEefTFbxDTZSZ6nWfjJUHf4g8pLoOasV86y-jTOIpts";
 const WORKBOOK_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=xlsx`;
 
+const CONTACT_ENDPOINT = "https://formsubmit.co/ajax/zandt613@gmail.com";
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit?usp=sharing`;
 
 const HTMLVIEW_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/htmlview`;
@@ -310,3 +311,59 @@ async function init() {
 }
 
 init();
+
+function setupContactForm() {
+  const dialog = document.getElementById("contact-dialog");
+  const form = document.getElementById("contact-form");
+  const statusEl = document.getElementById("contact-status");
+  const sendButton = document.getElementById("contact-send");
+
+  function showStatus(message, isError) {
+    statusEl.textContent = message;
+    statusEl.classList.toggle("is-error", isError);
+    statusEl.classList.remove("hidden");
+  }
+
+  document.getElementById("contact-open").addEventListener("click", () => {
+    statusEl.classList.add("hidden");
+    dialog.showModal();
+  });
+  document.getElementById("contact-cancel").addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) {
+      dialog.close();
+    }
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    data.append("_subject", "Simcha Planning site: new message");
+    data.append("_replyto", data.get("email"));
+    data.append("_template", "table");
+    sendButton.disabled = true;
+    sendButton.textContent = "Sending...";
+
+    try {
+      const response = await fetch(CONTACT_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: data,
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || result.success === "false" || result.success === false) {
+        throw new Error(result.message || "Send failed");
+      }
+      form.reset();
+      showStatus("Thanks! Your message was sent.", false);
+    } catch (error) {
+      console.error(error);
+      showStatus("Sorry, that didn't send. Please try again in a moment.", true);
+    } finally {
+      sendButton.disabled = false;
+      sendButton.textContent = "Send";
+    }
+  });
+}
+
+setupContactForm();
