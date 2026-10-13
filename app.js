@@ -358,7 +358,7 @@ function setupContactForm() {
       showStatus("Thanks! Your message was sent.", false);
     } catch (error) {
       console.error(error);
-      showStatus("Sorry, that didn't send. Please try again in a moment.", true);
+      showStatus(`Sorry, that didn't send${error.message && error.message !== "Send failed" ? ` (${error.message})` : ""}. Please try again in a moment.`, true);
     } finally {
       sendButton.disabled = false;
       sendButton.textContent = "Send";
