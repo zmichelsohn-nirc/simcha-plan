@@ -340,12 +340,6 @@ h1 {
   font-family: Fraunces, Georgia, serif;
 }
 
-.contact-hint {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
 .contact-form label {
   display: grid;
   gap: 0.25rem;
