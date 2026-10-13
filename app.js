@@ -1,6 +1,19 @@
 const SPREADSHEET_ID = "1HEefTFbxDTZSZ6nWfjJUHf4g8pLoOasV86y-jTOIpts";
 const WORKBOOK_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=xlsx`;
 
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit?usp=sharing`;
+
+// Tab name -> sheet gid, so each section's button opens its own tab. Tabs not
+// listed here (new or renamed) fall back to the spreadsheet's main link.
+const TAB_GIDS = {
+  "Musicians": 0,
+  "Photographers": 2114847376,
+  "Caterers": 784334208,
+  "Venues": 1742539677,
+  "Party Planners": 679368504,
+  "Gemachs": 2103416205,
+};
+
 // Column headers (case-insensitive) that get special treatment. Any other
 // column in a tab is shown as a plain labeled detail, so new columns in the
 // sheet appear automatically.
@@ -181,7 +194,14 @@ function createSection(sheet) {
   count.className = "count";
   count.textContent = `${sheet.items.length} ${sheet.items.length === 1 ? "listing" : "listings"}`;
 
-  header.append(title, count);
+  const edit = document.createElement("a");
+  edit.className = "section-edit";
+  edit.href = sheet.name in TAB_GIDS ? `${SHEET_URL}&gid=${TAB_GIDS[sheet.name]}#gid=${TAB_GIDS[sheet.name]}` : SHEET_URL;
+  edit.target = "_blank";
+  edit.rel = "noopener noreferrer";
+  edit.textContent = "Add or update";
+
+  header.append(title, count, edit);
   section.appendChild(header);
 
   const cards = document.createElement("div");
