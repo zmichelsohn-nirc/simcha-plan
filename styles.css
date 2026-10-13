@@ -1,0 +1,255 @@
+:root {
+  --bg: #f6f7f2;
+  --surface: #ffffff;
+  --text: #20231f;
+  --muted: #647064;
+  --accent: #226f68;
+  --accent-strong: #174f4a;
+  --accent-soft: #e6f2ef;
+  --rose: #a14f63;
+  --gold: #b8832f;
+  --border: #dbe1d8;
+  --shadow: 0 12px 34px rgba(32, 35, 31, 0.08);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text);
+  background:
+    linear-gradient(135deg, rgba(34, 111, 104, 0.10), transparent 34rem),
+    linear-gradient(315deg, rgba(161, 79, 99, 0.10), transparent 28rem),
+    var(--bg);
+  line-height: 1.5;
+}
+
+.site-header {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 1.25rem;
+}
+
+h1 {
+  margin: 0;
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: 0;
+  line-height: 1.05;
+}
+
+#app {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 1.25rem 3rem;
+}
+
+.update-note {
+  margin: 0 0 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #d9d7c4;
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+  background: rgba(255, 252, 241, 0.92);
+  color: #4a4638;
+  font-weight: 600;
+}
+
+.update-note a {
+  color: var(--accent-strong);
+  white-space: nowrap;
+}
+
+.status-message {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.status-error {
+  color: #8a2932;
+  background: #fff4f4;
+  border-color: #efc8cd;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.vendor-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.cat-section {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.cat-summary {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.cat-summary::marker,
+.cat-summary::-webkit-details-marker {
+  display: none;
+}
+
+.cat-summary:hover {
+  background: rgba(34, 111, 104, 0.05);
+}
+
+.chevron {
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--accent);
+  transition: transform 0.18s ease;
+}
+
+.cat-section[open] .chevron {
+  transform: rotate(90deg);
+}
+
+.cat-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.count {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 0.8rem;
+  padding: 0 1rem 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.vendor-card {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.provider {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.rate {
+  flex: 0 0 auto;
+  padding: 0.2rem 0.45rem;
+  border-radius: 6px;
+  background: #fff4de;
+  color: #734d14;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.details {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0.9rem 0 0;
+}
+
+.detail {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.link-list {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.notes-detail {
+  margin-top: 0.15rem;
+  padding: 0.65rem 0.7rem;
+  border-radius: 8px;
+  background: var(--accent-soft);
+}
+
+.last-updated {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0.85rem 0 0;
+  padding: 0.25rem 0.45rem;
+  border-radius: 6px;
+  background: #eef4f3;
+  color: var(--accent-strong);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.label {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.value {
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.value a {
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
+.empty {
+  color: var(--muted);
+  font-style: italic;
+}
+
+@media (max-width: 640px) {
+  .site-header {
+    padding-top: 1.5rem;
+  }
+
+  .cat-summary {
+    grid-template-columns: auto 1fr;
+  }
+
+  .count {
+    grid-column: 2;
+  }
+}
